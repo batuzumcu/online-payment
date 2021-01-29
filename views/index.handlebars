@@ -1,0 +1,73 @@
+<section>
+    <div class="row">
+        <div class="col-md-6 sm-4 text-center">
+            <h1 class="display-3 mt-3 pt-5">
+                ePhone12
+            </h1>
+            <p class="first-section">An edge-to-edge OLED display. Ceramic Shield with four times better drop performance. And Night mode on every camera. ePhone 12 has it all — in two perfect sizes.</p>
+
+            
+            <script src="https://js.stripe.com/v3"></script>
+
+            <button type="button" 
+            id="stripe-btn"
+            role="link"
+            class="btn btn-md stripe-btn text-white" 
+                style="background-color: #3282b8;">
+                <i class="social-icon fab fa-stripe-s"></i>Stripe
+            </button>
+
+
+            <div id="error-message"></div>
+
+            <script>
+            
+            (function () {
+                var stripe = Stripe(
+                "pk_test_51IEF3TKbtO6kUvyszjLn0QsoGDqiYj7IEaAV9VAmrU6p7ZJ3I7kiIOJkGgV7j4IVJJFvGWIAZuYgEms6c5qezhka00150OiRHe"
+                );
+
+                var checkoutButton = document.getElementById(
+                "stripe-btn"
+                );
+                checkoutButton.addEventListener("click", function () {
+                /*
+                * When the customer clicks on the button, redirect
+                * them to Checkout.
+                */
+                stripe
+                    .redirectToCheckout({
+                    lineItems: [{ price: "price_1IEJhpKbtO6kUvys4bDTwFjg", quantity: 1 }],
+                    mode: "payment",
+                    /*
+                    * Do not rely on the redirect to the successUrl for fulfilling
+                    * purchases, customers may not always reach the success_url after
+                    * a successful payment.
+                    * Instead use one of the strategies described in
+                    * https://stripe.com/docs/payments/checkout/fulfill-orders
+                    */
+                    successUrl: "https://payment-collection.herokuapp.com/success",
+                    cancelUrl: "https://payment-collection.herokuapp.com/cancel",
+                    })
+                    .then(function (result) {
+                    if (result.error) {
+                        /*
+                        * If `redirectToCheckout` fails due to a browser or network
+                        * error, display the localized error message to your customer.
+                        */
+                        var displayError = document.getElementById("error-message");
+                        displayError.textContent = result.error.message;
+                    }
+                    });
+                });
+            })();
+            </script>
+            <form action="/pay" method="post">
+            <button type="submit" class="btn btn-md paypal-btn text-white" style="background-color: #3282b8;"><i class="social-icon fab fa-paypal"></i>Paypal</button>
+            </form>
+        </div>
+        <div class="col-md-6 sm-4">
+        <img id="title-img" src="/img/iphone.png" alt="" class="img-fluid">
+        
+    </div>
+</section>
